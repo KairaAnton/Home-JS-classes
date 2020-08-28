@@ -3,17 +3,17 @@
 
 class MyArrayMethods {
     length = 0;
-    constructor(...arr) {
+    constructor(...arg) {
 
-        for (let i = 0; i < arguments.length; i++) {
-            this[this.length] = arguments[i];
+        for (let i = 0; i < arg.length; i++) {
+            this[this.length] = arg[i];
             this.length++;
         }
     }
 
-    push = function () {
-        for (let i = 0; i < arguments.length; i++) {
-            this[this.length] = arguments[i];
+    push = function (...arg) {
+        for (let i = 0; i < arg.length; i++) {
+            this[this.length] = arg[i];
 
             this.length++;
         }
@@ -79,7 +79,7 @@ class MyArrayMethods {
     }
 
     shift = function () {
-        const firstIndex = length - 0;
+        const firstIndex = this[0];
 
         const firstItem = this[firstIndex];
 
@@ -109,7 +109,7 @@ class MyArrayMethods {
 
         }
 
-        for (let i = 0; i < arr.length ; i++) {
+        for (let i = 0; i < arr.length; i++) {
 
             this[i + arg.length] = arr[i];
         }
@@ -142,11 +142,9 @@ class RangeValidator {
         if (typeof from !== "number") {
             throw new TypeError("from must be a number");
         }
-
-        if (from < 0) {
-            throw new RangeError("from must be a positiv value");
+        if (to <= this._from) {
+            throw new RangeError("from must be less than to");
         }
-
         return this._from = from;
     }
 
@@ -154,8 +152,8 @@ class RangeValidator {
         if (typeof to !== "number") {
             throw new TypeError("from must be a number");
         }
-        if (to < 0) {
-            throw new RangeError("from must be a positiv value");
+        if (to <= this._from) {
+            throw new RangeError("from must be less than to");
         }
         return this._to = to;
     }
@@ -174,16 +172,8 @@ class RangeValidator {
 
 
     validate(number) {
-        if (this._from < this._to) {
-            return number >= this._from && number <= this._to;
-        }
-
-        if (this._from > this._to) {
-            return number <= this._from && number >= this._to;
-        }
-
+        return number >= this._from && number <= this._to;
     }
-
 }
 
 const validator = new RangeValidator();
@@ -214,7 +204,7 @@ function reducer(number) {
             .reduce((accumulator, currentValue) => accumulator + currentValue)
     }
     if (reduce.split('').length > 1) {
-        return reducer(number = reduce);
+        return reducer(reduce);
     }
 
 
